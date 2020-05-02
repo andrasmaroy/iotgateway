@@ -1,16 +1,13 @@
 version: '2'
 services:
     mauthp:
-        image: mauthp
-        build: ./mosquitto-auth-plugin
+        image: rabbitmq:3.8.0-management-alpine
         container_name: "mauthp"
         ports:
+            - 15672:15672
             - 1883:1883
-            - 9001:9001
-        links:
-            - authdb
-        depends_on:
-            - authdb
+        volumes:
+            - ./rabbitmq/:/etc/rabbitmq
     mqttadmin:
         image: mqttadmin
         build: ./mqttadmin
