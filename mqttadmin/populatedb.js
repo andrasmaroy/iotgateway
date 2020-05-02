@@ -12,7 +12,6 @@ if (!userArgs[0].startsWith('mongodb://')) {
 
 var async = require('async')
 var Device = require('./models/device')
-var mosquittoPBKDF2 = require('mosquitto-pbkdf2');
 
 var mongoose = require('mongoose');
 var mongoDB = userArgs[0];
@@ -23,54 +22,43 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 
 var devices = []
 
-function deviceCreate(name, type, password, topics, superuser) {
-    devicedetail =
-        {
-            name: name,
-            type: type,
-            password: password,
-            topics: topics,
-            superuser: superuser
-        }
-
-    var device = new Device(devicedetail);
-
-    device.save(function (err) {
-        if (err) {
-            cb(err, null)
-            return
-        }
-        console.log('New Device: ' + device);
-        devices.push(device)
-        cb(null, device)
-    }  );
-}
-
 function createDevices(cb) {
     async.parallel([
             function(callback) {
-                mosquittoPBKDF2.createPasswordAsync(req.body.password, (pbkdf2Password)=> {
-                    deviceCreate('testDevice01', 'testType01', pbkdf2Password, {
+                Device.register({
+                    name: 'testDevice01',
+                    username: 'testDevice01',
+                    type: 'testType01',
+                    topics: {
                         "public/#": "r",
                         "device/testType01/testDevice01/#": "rw"
-                    }, false, callback);
-                });
-                },
-            function(callback) {
-                mosquittoPBKDF2.createPasswordAsync(req.body.password, (pbkdf2Password)=> {
-                    deviceCreate('testDevice02', 'testType01', pbkdf2Password, {
-                        "public/#": "r",
-                        "device/testType01/testDevice02/#": "rw"
-                    }, false, callback);
-                });
+                    },
+                    superuser: false
+                }, req.body.password, callback);
             },
             function(callback) {
-                mosquittoPBKDF2.createPasswordAsync(req.body.password, (pbkdf2Password)=> {
-                    deviceCreate('testDevice03', 'testType02', pbkdf2Password, {
+                Device.register({
+                    name: 'testDevice02',
+                    username: 'testDevice02',
+                    type: 'testType01',
+                    topics: {
+                        "public/#": "r",
+                        "device/testType01/testDevice02/#": "rw"
+                    },
+                    superuser: false
+                }, req.body.password, callback);
+            },
+            function(callback) {
+                Device.register({
+                    name: 'testDevice03',
+                    username: 'testDevice03',
+                    type: 'testType02',
+                    topics: {
                         "public/#": "r",
                         "device/testType02/testDevice03/#": "rw"
-                    }, false, callback);
-                });
+                    },
+                    superuser: false
+                }, req.body.password, callback);
             },
         ],
         // optional callback
