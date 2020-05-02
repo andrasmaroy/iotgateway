@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+var passport = require('passport');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -7,7 +8,9 @@ var mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var authRouter = require('./routes/auth');
 
+var Device = require('./models/device')
 
 //Set up default mongoose connection
 var mongoDB = 'mongodb://authdb/mqttadmin';
@@ -36,6 +39,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/auth', authRouter);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(Device.createStrategy());
+passport.serializeUser(Device.serializeUser());
+passport.deserializeUser(Device.deserializeUser());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

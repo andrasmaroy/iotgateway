@@ -1,5 +1,4 @@
 var async = require('async')
-var mosquittoPBKDF2 = require('mosquitto-pbkdf2');
 
 var Device = require('../models/device');
 
@@ -89,41 +88,28 @@ exports.device_create_post = [
         }
         else {
             // Data from form is valid.
-            //console.log("Generating hash for password : " + req.body.password);
-            mosquittoPBKDF2.createPasswordAsync(req.body.password, (pbkdf2Password)=>{
-                //console.log("Hash created: " + pbkdf2Password);
+            var topicsdata = JSON.parse(req.body.topics);
 
-                    //var topicsdata = {}
-                    //topicsdata["public/#"] = "r";
-                    //topicsdata["device/" + req.body.type + "/" + req.body.name + "/#"] = "rw";
+            var devicedata = {
+                name: req.body.name,
+                username: req.body.name,
+                type: req.body.type,
+                topics: topicsdata,
+                superuser: req.body.superuser ? true : false
+            };
 
-                    var topicsdata = JSON.parse(req.body.topics);
-
-                    var devicedata = {
-                        name: req.body.name,
-                        type: req.body.type,
-                        password: pbkdf2Password,
-                        topics: topicsdata,
-                        superuser: req.body.superuser ? true : false
-                    };
-
-                    //devicedata['topics'] = topicsdata;
-
-                    // Create a Device object with escaped and trimmed data.
-                    var device = new Device(
-                        devicedata
-                    );
-
-                    device.save(function (err) {
-                        if (err) {
-                            return next(err);
-                        }
-                        // Successful - redirect to new device record.
-                        res.redirect(device.url);
-                    });
-
-                }
+            // Create a Device object with escaped and trimmed data.
+            var device = new Device(
+                devicedata
             );
+            Device.register(device, req.body.password, function(err) {
+                if (err) {
+                    console.log('error when creating device');
+                    return next(err);
+                }
+                console.log('device registered');
+                res.redirect(device.url);
+            });
         }
     }
 ];
@@ -226,19 +212,14 @@ exports.device_update_post = [
         }
         else {
             // Data from form is valid. Update the record.
-            mosquittoPBKDF2.createPasswordAsync(req.body.password, (pbkdf2Password)=> {
-                devicedata.password = pbkdf2Password;
-                var device = new Device(
-                    devicedata
-                );
+            device.setPassword(req.body.password);
 
-                Device.findByIdAndUpdate(req.params.id, device, {}, function (err, thedevice) {
-                    if (err) {
-                        return next(err);
-                    }
-                    // Successful - redirect to device detail page.
-                    res.redirect(thedevice.url);
-                });
+            Device.findByIdAndUpdate(req.params.id, device, {}, function (err, thedevice) {
+                if (err) {
+                    return next(err);
+                }
+                // Successful - redirect to device detail page.
+                res.redirect(thedevice.url);
             });
         }
     }
