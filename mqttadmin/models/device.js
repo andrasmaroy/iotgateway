@@ -11,7 +11,7 @@ var DeviceSchema = new Schema(
         superuser: {type: Boolean}
     }
 );
-DeviceSchema.plugin(passportLocalMongoose);
+DeviceSchema.plugin(passportLocalMongoose, {usernameField: 'name'});
 
 DeviceSchema
     .virtual('url')
