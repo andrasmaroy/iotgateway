@@ -1,52 +1,74 @@
 version: '2'
 services:
-    mauthp:
-        image: mauthp
-        build: ./mosquitto-auth-plugin
-        container_name: "mauthp"
-        ports:
-            - 1883:1883
-            - 9001:9001
-        links:
-            - authdb
-        depends_on:
-            - authdb
-    mqttadmin:
-        image: mqttadmin
-        build: ./mqttadmin
-        container_name: "mqttadmin"
-        ports:
-            - 3000:3000
-        links:
-            - authdb
-        depends_on:
-            - mauthp
-    authdb:
-        image: mongo:latest
-        container_name: "authdb"
-        environment:
-          - MONGO_DATA_DIR=/data/db
-        volumes:
-          - .authdb/data/db:/data/db
-        ports:
-            - 27017:27017
-        command: mongod --profile=2
-    logger:
-        image: logger
-        build: ./logger
-        container_name: "logger"
-        links:
-            - logdb
-            - mauthp
-        depends_on:
-            - logdb
-    logdb:
-        image: mongo:latest
-        container_name: "logdb"
-        environment:
-          - MONGO_DATA_DIR=/data/db
-        volumes:
-          - .logdb/data/db:/data/db
-        ports:
-            - 27018:27017
-        command: mongod --profile=2
+  zookeeper:
+    image: confluentinc/cp-zookeeper:5.5.0
+    hostname: zookeeper
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    volumes:
+      - ./zookeeper/jaas.conf:/jaas.conf:ro
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      KAFKA_OPTS: "-Djava.security.auth.login.config=/jaas.conf"
+
+  broker:
+    image: confluentinc/cp-server:5.5.0
+    hostname: broker
+    container_name: broker
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+      - "8000:8000"
+    volumes:
+      - ./kafka/jaas.conf:/jaas.conf:ro
+    environment:
+      KAFKA_OPTS: "-Djava.security.auth.login.config=/jaas.conf"
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENERS: PLAINTEXT://broker:29092,SASL_PLAINTEXT://localhost:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,SASL_PLAINTEXT://localhost:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_SASL_ENABLED_MECHANISMS: SCRAM-SHA-256
+      KAFKA_SECURITY_INTER_BROKER_PROTOCOL: SASL_PLAINTEXT
+      KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: SCRAM-SHA-256
+      KAFKA_SUPER_USERS: "User:admin"
+
+  mqttadmin:
+    image: mqttadmin
+    build: ./mqttadmin
+    container_name: "mqttadmin"
+    ports:
+      - 3000:3000
+    links:
+      - zookeeper
+    depends_on:
+      - broker
+      - zookeeper
+
+  logger:
+    image: logger
+    build: ./logger
+    container_name: "logger"
+    links:
+      - logdb
+      - broker
+    depends_on:
+      - logdb
+
+  logdb:
+    image: mongo:latest
+    container_name: "logdb"
+    environment:
+      - MONGO_DATA_DIR=/data/db
+    volumes:
+      - .logdb/data/db:/data/db
+    ports:
+      - 27018:27017
+    command: mongod --profile=2
