@@ -19,6 +19,6 @@ block content
 
         form(method='POST' action='')
             div.form-group
-                input#device_id.form-control(type='hidden',name='device_id', required='true', value=device._id )
+                input#device_id.form-control(type='hidden',name='device_id', required='true', value=device.name )
 
             button.btn.btn-primary(type='submit') Delete
