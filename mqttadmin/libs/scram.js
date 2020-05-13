@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const srs = require('secure-random-string')
 
 const EQUAL_SIGN_REGEX = /=/g
 const COMMA_SIGN_REGEX = /,/g
@@ -7,116 +8,83 @@ const HMAC_CLIENT_KEY = 'Client Key'
 const HMAC_SERVER_KEY = 'Server Key'
 
 class SCRAM {
-  /**
-   * Hi() is, essentially, PBKDF2 [RFC2898] with HMAC() as the
-   * pseudorandom function (PRF) and with dkLen == output length of
-   * HMAC() == output length of H()
-   *
-   * @returns {Buffer}
-   */
-  hi(password, salt, iterations, digestDefinition) {
-      const mac = crypto.createHmac(digestDefinition.type, password)
-      mac.update(salt);
-      mac.update(Buffer.from('00000001', 'hex'));
-      var u1 = mac.digest()
-      var prev = u1
-      var result = u1
-      for (let i = 2; i <= iterations; i++) {
-        var ui = this.HMAC(password, prev)
-        result = this.xor(result, ui)
-        prev = ui
-      }
-      return result
-  }
-
-  /**
-   * Apply the exclusive-or operation to combine the octet string
-   * on the left of this operator with the octet string on the right of
-   * this operator.  The length of the output and each of the two
-   * inputs will be the same for this use
-   *
-   * @returns {Buffer}
-   */
-  xor(left, right) {
-    const bufferA = Buffer.from(left)
-    const bufferB = Buffer.from(right)
-    const length = Buffer.byteLength(bufferA)
-
-    const result = []
-    for (let i = 0; i < length; i++) {
-      result.push(bufferA[i] ^ bufferB[i])
+    constructor(password, iterations) {
+        const sha256 = this.generate(password, iterations, 'sha256')
+        const sha512 = this.generate(password, iterations, 'sha512')
+        return {"version": 1, "config": {"SCRAM-SHA-512": sha512, "SCRAM-SHA-256": sha256}}
     }
 
-    return Buffer.from(result)
-  }
-  /**
-   * @param {Connection} connection
-   * @param {Logger} logger
-   * @param {Function} saslAuthenticate
-   * @param {DigestDefinition} digestDefinition
-   */
-  constructor(password) {
-    this.digestDefinition = { length: 32, type: 'sha256', minIterations: 4096 }
+    generate(password, iterations, digestMethod) {
+        const salt = srs({length: 25, alphanumeric: true}).toLowerCase()
 
-    const digestType = this.digestDefinition.type.toUpperCase()
-    this.PREFIX = `SASL SCRAM ${digestType} authentication`
+        const saltedPassword = this.saltPassword(password, salt, iterations, digestMethod);
+        const clientKey = this.clientKey(Buffer.from(saltedPassword), digestMethod);
+        const storedKey = this.H(Buffer.from(clientKey), digestMethod);
+        const serverKey = this.serverKey(saltedPassword, digestMethod);
+        return `salt=${Buffer.from(salt).toString('base64')},stored_key=${Buffer.from(storedKey).toString('base64')},server_key=${Buffer.from(serverKey).toString('base64')},iterations=${iterations}`
+    }
 
-    this.salt = '1dn3xv4cymyfoq8xp27pnbky88'
-    this.generate(password)
-  }
+    saltPassword(password, salt, iterations, digestMethod) {
+        return this.hi(this.encodedPassword(password), salt, iterations, digestMethod)
+    }
 
-  generate(password) {
-    const saltedPassword = this.saltPassword(password);
-    const clientKey = this.clientKey(Buffer.from(saltedPassword));
-    const storedKey = this.H(Buffer.from(clientKey));
-    const serverKey = this.serverKey(saltedPassword);
-    console.log({"SCRAM-SHA-256": { salt: Buffer.from(this.salt, 'utf8').toString('base64'), stored_key: storedKey, server_key: serverKey, iterations: 4096}})
-  }
+    encodedPassword(password) {
+        return this.sanitizeString(password).toString('utf-8')
+    }
 
-  saltPassword(password) {
-    const salt = this.salt
-    const iterations = 4096
-    return this.hi(this.encodedPassword(password), salt, iterations, this.digestDefinition)
-  }
+    sanitizeString(str) {
+        return str.replace(EQUAL_SIGN_REGEX, '=3D').replace(COMMA_SIGN_REGEX, '=2C')
+    }
 
-  static sanitizeString(str) {
-    return str.replace(EQUAL_SIGN_REGEX, '=3D').replace(COMMA_SIGN_REGEX, '=2C')
-  }
+    hi(password, salt, iterations, digestMethod) {
+        const mac = crypto.createHmac(digestMethod, password)
+        mac.update(salt);
+        mac.update(Buffer.from('00000001', 'hex'));
+        var u1 = mac.digest()
+        var prev = u1
+        var result = u1
+        for (let i = 2; i <= iterations; i++) {
+            var ui = this.HMAC(password, prev, digestMethod)
+            result = this.xor(result, ui)
+            prev = ui
+        }
+        return result
+    }
 
-  /**
-   * @private
-   */
-  encodedPassword(password) {
-    return SCRAM.sanitizeString(password).toString('utf-8')
-  }
+    HMAC(key, data, digestMethod) {
+        return crypto
+            .createHmac(digestMethod, key)
+            .update(data)
+            .digest()
+    }
 
-  /**
-   * @private
-   */
-  H(data) {
-    return crypto
-      .createHash(this.digestDefinition.type)
-      .update(data)
-      .digest()
-  }
+    xor(left, right) {
+        const bufferA = Buffer.from(left)
+        const bufferB = Buffer.from(right)
+        const length = Buffer.byteLength(bufferA)
 
-  /**
-   * @private
-   */
-  HMAC(key, data) {
-    return crypto
-      .createHmac(this.digestDefinition.type, key)
-      .update(data)
-      .digest()
-  }
+        const result = []
+        for (let i = 0; i < length; i++) {
+            result.push(bufferA[i] ^ bufferB[i])
+        }
 
-  clientKey(saltedPassword) {
-    return this.HMAC(saltedPassword, HMAC_CLIENT_KEY)
-  }
+        return Buffer.from(result)
+    }
 
-  serverKey(saltedPassword) {
-    return this.HMAC(saltedPassword, HMAC_SERVER_KEY)
-  }
+    clientKey(saltedPassword, digestMethod) {
+        return this.HMAC(saltedPassword, HMAC_CLIENT_KEY, digestMethod)
+    }
+
+    H(data, digestMethod) {
+        return crypto
+            .createHash(digestMethod)
+            .update(data)
+            .digest()
+    }
+
+    serverKey(saltedPassword, digestMethod) {
+        return this.HMAC(saltedPassword, HMAC_SERVER_KEY, digestMethod)
+    }
 };
 
 module.exports = {
