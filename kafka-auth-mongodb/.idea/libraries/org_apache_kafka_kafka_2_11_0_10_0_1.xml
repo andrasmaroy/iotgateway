@@ -1,0 +1,76 @@
+<component name="libraryTable">
+  <library name="org.apache.kafka:kafka_2.11:0.10.0.1" type="repository">
+    <properties maven-id="org.apache.kafka:kafka_2.11:RELEASE" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka_2.11/2.4.1/kafka_2.11-2.4.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-clients/2.4.1/kafka-clients-2.4.1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/luben/zstd-jni/1.4.3-1/zstd-jni-1.4.3-1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/lz4/lz4-java/1.6.0/lz4-java-1.6.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/xerial/snappy/snappy-java/1.1.7.3/snappy-java-1.1.7.3.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.10.0/jackson-databind-2.10.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.10.0/jackson-annotations-2.10.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.10.0/jackson-core-2.10.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/module/jackson-module-scala_2.11/2.10.0/jackson-module-scala_2.11-2.10.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/module/jackson-module-paranamer/2.10.0/jackson-module-paranamer-2.10.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/thoughtworks/paranamer/paranamer/2.8/paranamer-2.8.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/dataformat/jackson-dataformat-csv/2.10.0/jackson-dataformat-csv-2.10.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/datatype/jackson-datatype-jdk8/2.10.0/jackson-datatype-jdk8-2.10.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/yammer/metrics/metrics-core/2.2.0/metrics-core-2.2.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/modules/scala-collection-compat_2.11/2.1.2/scala-collection-compat_2.11-2.1.2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/modules/scala-java8-compat_2.11/0.9.0/scala-java8-compat_2.11-0.9.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.11.12/scala-library-2.11.12.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-reflect/2.11.12/scala-reflect-2.11.12.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/typesafe/scala-logging/scala-logging_2.11/3.9.2/scala-logging_2.11-3.9.2.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.28/slf4j-api-1.7.28.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/zookeeper/zookeeper/3.5.7/zookeeper-3.5.7.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/zookeeper/zookeeper-jute/3.5.7/zookeeper-jute-3.5.7.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/yetus/audience-annotations/0.5.0/audience-annotations-0.5.0.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/netty/netty-handler/4.1.45.Final/netty-handler-4.1.45.Final.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/netty/netty-common/4.1.45.Final/netty-common-4.1.45.Final.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/netty/netty-buffer/4.1.45.Final/netty-buffer-4.1.45.Final.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/netty/netty-transport/4.1.45.Final/netty-transport-4.1.45.Final.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/netty/netty-resolver/4.1.45.Final/netty-resolver-4.1.45.Final.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/netty/netty-codec/4.1.45.Final/netty-codec-4.1.45.Final.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/netty/netty-transport-native-epoll/4.1.45.Final/netty-transport-native-epoll-4.1.45.Final.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/netty/netty-transport-native-unix-common/4.1.45.Final/netty-transport-native-unix-common-4.1.45.Final.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/commons-cli/commons-cli/1.4/commons-cli-1.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka_2.11/2.4.1/kafka_2.11-2.4.1-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/kafka/kafka-clients/2.4.1/kafka-clients-2.4.1-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/luben/zstd-jni/1.4.3-1/zstd-jni-1.4.3-1-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/lz4/lz4-java/1.6.0/lz4-java-1.6.0-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/xerial/snappy/snappy-java/1.1.7.3/snappy-java-1.1.7.3-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.10.0/jackson-databind-2.10.0-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.10.0/jackson-annotations-2.10.0-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.10.0/jackson-core-2.10.0-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/module/jackson-module-scala_2.11/2.10.0/jackson-module-scala_2.11-2.10.0-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/module/jackson-module-paranamer/2.10.0/jackson-module-paranamer-2.10.0-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/thoughtworks/paranamer/paranamer/2.8/paranamer-2.8-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/dataformat/jackson-dataformat-csv/2.10.0/jackson-dataformat-csv-2.10.0-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/datatype/jackson-datatype-jdk8/2.10.0/jackson-datatype-jdk8-2.10.0-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/net/sf/jopt-simple/jopt-simple/5.0.4/jopt-simple-5.0.4-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/yammer/metrics/metrics-core/2.2.0/metrics-core-2.2.0-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/modules/scala-collection-compat_2.11/2.1.2/scala-collection-compat_2.11-2.1.2-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/modules/scala-java8-compat_2.11/0.9.0/scala-java8-compat_2.11-0.9.0-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-library/2.11.12/scala-library-2.11.12-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/scala-lang/scala-reflect/2.11.12/scala-reflect-2.11.12-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/typesafe/scala-logging/scala-logging_2.11/3.9.2/scala-logging_2.11-3.9.2-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.28/slf4j-api-1.7.28-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/zookeeper/zookeeper/3.5.7/zookeeper-3.5.7-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/zookeeper/zookeeper-jute/3.5.7/zookeeper-jute-3.5.7-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/yetus/audience-annotations/0.5.0/audience-annotations-0.5.0-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/netty/netty-handler/4.1.45.Final/netty-handler-4.1.45.Final-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/netty/netty-common/4.1.45.Final/netty-common-4.1.45.Final-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/netty/netty-buffer/4.1.45.Final/netty-buffer-4.1.45.Final-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/netty/netty-transport/4.1.45.Final/netty-transport-4.1.45.Final-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/netty/netty-resolver/4.1.45.Final/netty-resolver-4.1.45.Final-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/netty/netty-codec/4.1.45.Final/netty-codec-4.1.45.Final-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/netty/netty-transport-native-epoll/4.1.45.Final/netty-transport-native-epoll-4.1.45.Final-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/io/netty/netty-transport-native-unix-common/4.1.45.Final/netty-transport-native-unix-common-4.1.45.Final-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/commons-cli/commons-cli/1.4/commons-cli-1.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

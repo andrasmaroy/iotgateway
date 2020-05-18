@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="kafka-auth-mongodb:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/kafka_auth_mongodb_jar</output-path>
+    <root id="archive" name="kafka-auth-mongodb.jar">
+      <element id="module-output" name="kafka-auth-mongodb" />
+    </root>
+  </artifact>
+</component>
